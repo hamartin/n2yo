@@ -5,14 +5,14 @@ use serde::{Deserialize, Serialize};
 use std::time::Duration;
 
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Info {
     pub satname: String,
     pub satid: u64,
     pub transactionscount: u64,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Position {
     pub satlatitude: f64,
     pub satlongitude: f64,
@@ -28,7 +28,25 @@ pub struct Position {
 #[derive(Deserialize, Serialize)]
 pub struct Satellite {
     pub info: Info,
-    pub positions: Option<Vec<Position>>,
+    pub positions: Vec<Position>,
+}
+
+impl Satellite {
+    pub fn get_positions(&self) -> Vec<Satellite2> {
+        let satellites: Vec<Satellite2> = self.positions.iter().map(|position| {
+            Satellite2 {
+                info: self.info.clone(),
+                position: position.clone(),
+            }
+        }).collect();
+        satellites
+    }
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct Satellite2 {
+    pub info: Info,
+    pub position: Position,
 }
 
 pub struct N2YOClient {

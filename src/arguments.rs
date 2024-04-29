@@ -26,6 +26,8 @@ The general argument format for using this application is
 satellite --id 12345
 satellite --id 12345 --seconds 2
 
+Don't set seconds to anything other than 1 for now.
+
 "
         )
         .get_matches()

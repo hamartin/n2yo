@@ -16,7 +16,10 @@ fn main() {
     let response = client.get_position(id, seconds);
     match response {
         Ok(ref data) => {
-            println!("{}", serde_json::to_string(data).unwrap());
+            let positions = data.get_positions();
+            for position in positions {
+                println!("{}", serde_json::to_string(&position).unwrap());
+            }
         },
         Err(err) => {
             eprintln!("ERROR: {:?}", err);
