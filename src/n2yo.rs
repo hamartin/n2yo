@@ -1,8 +1,5 @@
 use crate::config::Config;
-
-use reqwest::blocking::Response;
 use serde::{Deserialize, Serialize};
-use std::time::Duration;
 
 
 #[derive(Clone, Deserialize, Serialize)]
@@ -55,7 +52,7 @@ pub struct N2YOClient {
 }
 
 impl N2YOClient {
-    fn get(&self, url: String) -> Response {
+    fn get(&self, url: String) -> reqwest::blocking::Response {
         let result = self
             .client
             .get(url)
@@ -74,14 +71,14 @@ impl N2YOClient {
             }
         }
     }
-    pub fn new(config: Config) -> Self {
+    pub fn new(config: &Config) -> Self {
         let result = reqwest::blocking::Client::builder()
-            .timeout(Duration::from_secs(config.get_timeout()))
+            .timeout(std::time::Duration::from_secs(config.get_timeout()))
             .build();
         match result {
             Ok(client) => Self {
                 client,
-                config,
+                config: config.clone(),
             },
             Err(err) => {
                 eprintln!("ERROR: When creating blocking client: {:?}", err);
@@ -89,7 +86,7 @@ impl N2YOClient {
             }
         }
     }
-    pub fn get_position(&self, id: String, seconds: String) -> Result<Satellite, reqwest::Error> {
+    pub fn get_position(&self, id: &String, seconds: &String) -> Result<Satellite, reqwest::Error> {
         let url = self.config.get_url_position(id, seconds);
         self.get(url).json::<Satellite>()
     }
