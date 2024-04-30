@@ -1,6 +1,9 @@
-# N2YO
+# n2yo
+A rust application that queries the n2yo.com site for satellite position and stores it to file as JSON.
 
-On my system, the config file can be found under ```~/.config/n2yo/config.toml```.
+On my system, the config file can be found under
+```~/.config/n2yo/config.toml```. From what I can gather from the documentation
+of directories, the location changes depending on OS, distribution etc.
 
 Below is an example config.
 
@@ -17,7 +20,8 @@ datadir = "/tmp"                    // The directory to store the resulting file
 sleep = 300                         // The time in seconds between each request.
 ```
 
-If you execute the app with an ID which does not exist, the following will happen.
+If you execute the app with an ID which does not exist, the following will
+happen.
 
 ``` bash
 hamartin@Vogon:~/Devel/rust/n2yo/src$ cargo run -- --id 123454354544
